@@ -1,9 +1,11 @@
 import selectorlib
 import requests
 from datetime import datetime
+import sqlite3
 
 URL = "https://programmer100.pythonanywhere.com/"
 
+connection = sqlite3.connect("data.db")
 
 def scrape(url):
     scrape_local = requests.get(url)
