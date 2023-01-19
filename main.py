@@ -6,6 +6,7 @@ import sqlite3
 URL = "https://programmer100.pythonanywhere.com/"
 
 connection = sqlite3.connect("data.db")
+cursor = connection.cursor()
 
 def scrape(url):
     scrape_local = requests.get(url)
@@ -19,16 +20,16 @@ def extract(scrape_local):
     return value
 
 
-def read():
-    with open("data.txt", 'r') as file:
-        return file.read()
+# def read(temp):
+#     cursor.execute("SELECT * FROM Climate WHERE Date=?, Temperature", temp)
+#     rows = cursor.fetchall()
+#     return rows
 
 
 def store(extracted_local):
     now = datetime.now().strftime("%y-%m-%d-%H-%M-%S")
-    with open("data.txt", 'a') as file:
-        line = f"{now}, {extracted_local}" + "\n"
-        file.write(line)
+    row = cursor.execute("INSERT INTO Climate VALUES(?,?)", (now, extracted_local))
+    connection.commit()
     print("Temperature was successfully inserted")
 
 
